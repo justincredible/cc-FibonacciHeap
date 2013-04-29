@@ -410,16 +410,17 @@ void Cut( FibHeap* H, FibNode* x, FibNode* y )
 	if ( x->right == x )
 	{
 		y->child = NIL;
-		y->degree--;
 	}
 	else
 	{
 		x->right->left = x->left;
 		x->left->right = x->right;
 		if ( y->child == x )
+		{
 			y->child = x->right;
-		y->degree--;
+		}
 	}
+	y->degree--;
 	// 2
 	H->min->right->left = x;
 	x->right = H->min->right;
@@ -466,10 +467,9 @@ void CascadingCut( FibHeap* H, FibNode* y )
 
 /*
  * Trivial to understand
- * edited to prevent inherent memory leak in non-garbage collected languages
  */
-FibNode* Delete( FibHeap* H, FibNode* x )
+void Delete( FibHeap* H, FibNode* x )
 {
 	DecreaseKey(H,x,negInfinity());
-	return ExtractMin(H);
+	ExtractMin(H);
 }

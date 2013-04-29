@@ -112,7 +112,7 @@ int main()
 		cout << "Delete from H1: ";
 		for ( int i = 0; i < m/n; i++ )
 		{
-			temp = Delete(H1,Arr1[i]);
+			Delete(H1,Arr1[i]);
 			if ( i == m/n-1 )
 				cout << i+1 << " nodes";
 		}
@@ -120,14 +120,15 @@ int main()
 		cout << "Delete from H2: ";
 		for ( int i = 0; i < n; i++ )
 		{
-			temp = Delete(H2,Arr2[i]);
+			Delete(H2,Arr2[i]);
 			if ( i == n-1 )
 				cout << i+1 << " nodes";
 		}
 		cout << endl;
 	}
 
-	// TEST 5 decrease all remaining keys to -1
+	// TEST 5 decrease all remaining keys except the last to -1
+	// also tests decrease key using a greater key than the node already has
 	if ( n > 0 )
 	{
 		for ( int i = m/n; i < m-1; i++ )

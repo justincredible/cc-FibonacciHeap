@@ -35,6 +35,6 @@ void FibHeapLink( FibHeap* H, FibNode* y, FibNode* x );
 void DecreaseKey( FibHeap* H, FibNode* x, int k );
 void Cut( FibHeap* H, FibNode* x, FibNode* y );
 void CascadingCut( FibHeap* H, FibNode* y );
-FibNode* Delete( FibHeap* H, FibNode* x );
+void Delete( FibHeap* H, FibNode* x );
 
 #endif 
