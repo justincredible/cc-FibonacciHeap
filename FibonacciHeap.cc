@@ -8,12 +8,10 @@
  *
  */
 
+#include <cstdlib>
+#include <climits>
 #include <cmath> // I still can't write an accurate logarithmic function.
-
 #include "FibonacciHeap.h"
-// Peripherals.h can be replaced by a standard library: include climits and changing delete to decrease the key to INT_MIN
-//														include cstdlib and changing NILs to NULLs
-#include "Peripherals.h"
 
 using namespace std;
 
@@ -27,7 +25,7 @@ FibHeap* MakeHeap()
 	
 	H = new FibHeap;
 	H->n = 0;
-	H->min = NIL;
+	H->min = NULL;
 
 	return H;
 }
@@ -51,13 +49,13 @@ void Insert( FibHeap* H, FibNode* x )
 	// 1
 	x->degree = 0;
 	// 2
-	x->p = NIL;
+	x->p = NULL;
 	// 3
-	x->child = NIL;
+	x->child = NULL;
 	// 4
 	x->mark = false;
 	// 5
-	if ( H->min == NIL )
+	if ( H->min == NULL )
 	{
 		// 6, 7
 		H->min = x->left = x->right = x;
@@ -108,7 +106,7 @@ FibHeap* Union( FibHeap* H1, FibHeap* H2 )
 	// 2
 	H->min = H1->min;
 	// 3
-	if ( H->min != NIL && H2->min != NIL )
+	if ( H->min != NULL && H2->min != NULL )
 	{
 		H->min->right->left = H2->min->left;
 		H2->min->left->right = H->min->right;
@@ -116,7 +114,7 @@ FibHeap* Union( FibHeap* H1, FibHeap* H2 )
 		H2->min->left = H->min;
 	}
 	// 4
-	if ( H1->min == NIL || ( H2->min != NIL && H2->min->key < H1->min->key ) )
+	if ( H1->min == NULL || ( H2->min != NULL && H2->min->key < H1->min->key ) )
 	{
 		// 5
 		H->min = H2->min;
@@ -153,11 +151,11 @@ FibNode* ExtractMin( FibHeap* H )
 	// 1
 	z = H->min;
 	// 2
-	if ( z != NIL )
+	if ( z != NULL )
 	{
 		// 3
 		x = z->child;
-		if ( x != NIL )
+		if ( x != NULL )
 		{
 			childList = new FibNode*[z->degree];
 			next = x;
@@ -175,7 +173,7 @@ FibNode* ExtractMin( FibHeap* H )
 				H->min->left = x;
 				x->right = H->min;
 				// 5
-				x->p = NIL;
+				x->p = NULL;
 			}
 			delete [] childList;
 		}
@@ -186,7 +184,7 @@ FibNode* ExtractMin( FibHeap* H )
 		if ( z == z->right )
 		{
 			// 8
-			H->min = NIL;
+			H->min = NULL;
 		}
 		else
 		{
@@ -242,7 +240,7 @@ void Consolidate( FibHeap* H )
 	for ( int i = 0; i < max_degree+2; i++ )
 	{
 		// 3
-		A[i] = NIL;
+		A[i] = NULL;
 	}
 	// 4
 	w = H->min;
@@ -267,7 +265,7 @@ void Consolidate( FibHeap* H )
 		// 6
 		d = x->degree;
 		// 7
-		while ( A[d] != NIL )
+		while ( A[d] != NULL )
 		{
 			// 8
 			y = A[d];
@@ -282,7 +280,7 @@ void Consolidate( FibHeap* H )
 			// 11
 			FibHeapLink(H,y,x);
 			// 12
-			A[d] = NIL;
+			A[d] = NULL;
 			// 13
 			d++;
 		}
@@ -291,15 +289,15 @@ void Consolidate( FibHeap* H )
 	}
 	delete [] rootList;
 	// 15
-	H->min = NIL;
+	H->min = NULL;
 	// 16
 	for ( int i = 0; i < max_degree+2; i++ )
 	{
 		// 17
-		if ( A[i] != NIL )
+		if ( A[i] != NULL )
 		{
 			// 18
-			if ( H->min == NIL )
+			if ( H->min == NULL )
 			{
 				// 19, 20
 				H->min = A[i]->left = A[i]->right = A[i];
@@ -335,7 +333,7 @@ void FibHeapLink( FibHeap* H, FibNode* y, FibNode* x )
 	y->left->right = y->right;
 	y->right->left = y->left;
 	// 2
-	if ( x->child != NIL )
+	if ( x->child != NULL )
 	{
 		x->child->left->right = y;
 		y->left = x->child->left;
@@ -382,7 +380,7 @@ void DecreaseKey( FibHeap* H, FibNode* x, int k )
 	// 4
 	y = x->p;
 	// 5
-	if ( y != NIL && x->key < y->key )
+	if ( y != NULL && x->key < y->key )
 	{
 		// 6
 		Cut(H,x,y);
@@ -409,7 +407,7 @@ void Cut( FibHeap* H, FibNode* x, FibNode* y )
 	// 1
 	if ( x->right == x )
 	{
-		y->child = NIL;
+		y->child = NULL;
 	}
 	else
 	{
@@ -427,7 +425,7 @@ void Cut( FibHeap* H, FibNode* x, FibNode* y )
 	H->min->right = x;
 	x->left = H->min;
 	// 3
-	x->p = NIL;
+	x->p = NULL;
 	// 4
 	x->mark = false;
 }
@@ -447,7 +445,7 @@ void CascadingCut( FibHeap* H, FibNode* y )
 	// 1
 	z = y->p;
 	// 2
-	if ( z != NIL )
+	if ( z != NULL )
 	{
 		// 3
 		if ( y->mark == false )
@@ -470,6 +468,6 @@ void CascadingCut( FibHeap* H, FibNode* y )
  */
 void Delete( FibHeap* H, FibNode* x )
 {
-	DecreaseKey(H,x,negInfinity());
+	DecreaseKey(H,x,INT_MIN);
 	ExtractMin(H);
 }
